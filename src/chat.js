@@ -85,6 +85,8 @@ const notify = async (name, url, status) => {
     ]
   };
 
+  console.log('body', body)
+
   const response = await axios.post(url, body);
   if (response.status !== 200) {
     throw new Error(`Teams notification failed. Response status=${response.status}`);
