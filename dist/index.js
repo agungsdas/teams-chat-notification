@@ -31499,15 +31499,15 @@ const notify = async (name, url, status) => {
   const eventUrl = `${repoUrl}${eventPath}`;
   const checksUrl = `${repoUrl}/actions/runs/${ github.context.runId }`;
 
-  let commiterName = ''
-  let commiterEmail = ''
+  let committerName = ''
+  let committerEmail = ''
   let message = ''
   let environment = ref || 'undefined'
 
   if (github.context.eventName === 'push') {
     const pushPayload = github.context.payload || {}
-    commiterName = pushPayload.commits?.[0]?.committer?.name
-    commiterEmail = pushPayload.commits?.[0]?.committer?.email
+    committerName = pushPayload.commits?.[0]?.committer?.name
+    committerEmail = pushPayload.commits?.[0]?.committer?.email
     message = pushPayload.commits?.[0]?.message
   }
 
