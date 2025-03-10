@@ -31554,7 +31554,7 @@ const notify = async (name, url, status) => {
     ]
   };
 
-  console.log('body', body)
+  console.log('body', JSON.stringify(body))
 
   const response = await axios.post(url, body);
   if (response.status !== 200) {
