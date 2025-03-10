@@ -3,9 +3,9 @@ const axios = require('axios');
 const { capitalCase } = require('change-case');
 
 const statusColorPalette = {
-  success: "Green",
-  cancelled: "Yellow",
-  failure: "Red"
+  success: "Good",   
+  cancelled: "Warning",
+  failure: "Attention"
 };
 
 const statusText = {
@@ -48,44 +48,29 @@ const notify = async (name, url, status) => {
   if (environment.toLowerCase().includes("non-production") || environment.toLowerCase().includes("nonproduction")) environment = "Non Production";
 
   const body = {
-    "type": "message",
-    "attachments": [
+    "@type": "MessageCard",
+    "@context": "http://schema.org/extensions",
+    "themeColor": statusColorPalette[status],
+    "summary": `${name} - ${statusText[status]}`,
+    "sections": [
       {
-        "contentType": "application/vnd.microsoft.card.adaptive",
-        "content": {
-          "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-          "type": "AdaptiveCard",
-          "version": "1.4",
-          "body": [
-            {
-              "type": "TextBlock",
-              "text": `**${name}** - ${statusText[status]}`,
-              "wrap": true,
-              "size": "Large",
-              "weight": "Bolder",
-              "color": statusColorPalette[status]
-            },
-            {
-              "type": "FactSet",
-              "facts": [
-                { "title": "Repository:", "value": `[${capitalCase(repo)}](${repoUrl})` },
-                { "title": "Changes:", "value": message },
-                ...(committerName ? [{ "title": "Updated by:", "value": `${committerName} (${committerEmail})` }] : []),
-                { "title": "Environment:", "value": environment }
-              ]
-            }
-          ],
-          "actions": [
-            textButton("Open Repository", repoUrl),
-            textButton("Open Commit", eventUrl),
-            textButton("Open Workflow", checksUrl)
-          ]
-        }
+        "activityTitle": `**${name}** - ${statusText[status]}`,
+        "activitySubtitle": `Repository: [${capitalCase(repo)}](${repoUrl})`,
+        "activityImage": "https://lh4.googleusercontent.com/proxy/rsAS0A1vd7G_oSylcCJEk6mhEup0sXYUKPU8M822YtQYPPa7sqIfMzKfg0X4sZa5WQ2FiO-HkgTsYg",
+        "facts": [
+          { "name": "Changes:", "value": message },
+          ...(committerName ? [{ "name": "Updated by:", "value": `${committerName} (${committerEmail})` }] : []),
+          { "name": "Environment:", "value": environment }
+        ],
+        "markdown": true
       }
+    ],
+    "potentialAction": [
+      textButton("Open Repository", repoUrl),
+      textButton("Open Commit", eventUrl),
+      textButton("Open Workflow", checksUrl)
     ]
   };
-
-  console.log('body', JSON.stringify(body))
 
   const response = await axios.post(url, body);
   if (response.status !== 200) {
