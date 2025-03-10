@@ -31573,6 +31573,8 @@ const notify = async (name, url, status) => {
     ]
   };
 
+  console.log('url', url)
+  console.log('body', JSON.stringify(body))
   const response = await axios.default.post(url, body);
   if (response.status !== 200) {
     throw new Error(`Teams Chat notification failed. response status=${response.status}`);
