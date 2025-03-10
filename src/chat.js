@@ -15,11 +15,11 @@ const statusText = {
 };
 
 const textButton = (text, url) => ({
-  textButton: {
-    text,
-    onClick: { openLink: { url } }
-  }
+  "@type": "OpenUri",
+  "name": text,
+  "targets": [{ "os": "default", "uri": url }]
 });
+
 
 const notify = async (name, url, status) => {
   const { owner, repo } = github.context.repo;
