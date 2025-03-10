@@ -1,0 +1,19 @@
+name: 'teams-chat-notification'
+description: 'Teams Chat Notification for GitHub Actions'
+author: 'agungsdas'
+inputs:
+  name:
+    description: 'job name.'
+    required: true
+  url:
+    description: 'teams chat webhook url.'
+    required: true
+  status:
+    description: 'job status.'
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+branding:
+  icon: 'bell'
+  color: 'green'
