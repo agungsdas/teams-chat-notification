@@ -48,28 +48,17 @@ const notify = async (name, url, status) => {
   if (environment.toLowerCase().includes("non-production") || environment.toLowerCase().includes("nonproduction")) environment = "Non Production";
 
   const body = {
-    "@type": "MessageCard",
-    "@context": "http://schema.org/extensions",
-    "themeColor": statusColorPalette[status],
-    "summary": `${name} - ${statusText[status]}`,
-    "sections": [
-      {
-        "activityTitle": `**${name}** - ${statusText[status]}`,
-        "activitySubtitle": `Repository: [${capitalCase(repo)}](${repoUrl})`,
-        "activityImage": "https://lh4.googleusercontent.com/proxy/rsAS0A1vd7G_oSylcCJEk6mhEup0sXYUKPU8M822YtQYPPa7sqIfMzKfg0X4sZa5WQ2FiO-HkgTsYg",
-        "facts": [
-          { "name": "Changes:", "value": message },
-          ...(committerName ? [{ "name": "Updated by:", "value": `${committerName} (${committerEmail})` }] : []),
-          { "name": "Environment:", "value": environment }
-        ],
-        "markdown": true
-      }
-    ],
-    "potentialAction": [
-      textButton("Open Repository", repoUrl),
-      textButton("Open Commit", eventUrl),
-      textButton("Open Workflow", checksUrl)
-    ]
+    name,
+    statusText: statusText[status],
+    color: statusColorPalette[status],
+    repo: capitalCase(repo),
+    repoUrl,
+    eventUrl,
+    checksUrl,
+    message,
+    committerName,
+    committerEmail,
+    environment
   };
 
   const response = await axios.post(url, body);
