@@ -11,6 +11,15 @@ inputs:
   status:
     description: 'job status.'
     required: true
+  testflight:
+    description: 'testflight link.'
+    required: false
+  firebase:
+    description: 'firebase link.'
+    required: false
+  register-firebase:
+    description: 'firebase registration link.'
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'

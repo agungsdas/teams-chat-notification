@@ -31483,13 +31483,7 @@ const statusText = {
   failure: "Failed"
 };
 
-const textButton = (text, url) => ({
-  "@type": "OpenUri",
-  "name": text,
-  "targets": [{ "os": "default", "uri": url }]
-});
-
-const notify = async (name, url, status) => {
+const notify = async (name, url, status, testflight, firebase, registerFirebase) => {
   const { owner, repo } = github.context.repo;
   const { eventName, sha, ref } = github.context;
   const { number } = github.context.issue;
@@ -31527,7 +31521,10 @@ const notify = async (name, url, status) => {
     message,
     committerName,
     committerEmail,
-    environment
+    environment,
+    testflight,
+    firebase,
+    registerFirebase,
   };
 
   const response = await axios.post(url, body);
@@ -37613,10 +37610,13 @@ async function run() {
     const name = core.getInput('name', { required: true });
     const url = core.getInput('url', { required: true });
     const status = JobStatus.parse(core.getInput('status', { required: true }));
+    const testflight = core.getInput('testflight', { required: false });
+    const firebase = core.getInput('firebase', { required: false });
+    const registerFirebase = core.getInput('register-firebase', { required: false });
 
     core.debug(`input params: name=${name}, status=${status}, url=${url}`);
 
-    await TeamsChat.notify(name, url, status);
+    await TeamsChat.notify(name, url, status, testflight, firebase, registerFirebase);
     console.info('Sent message.')
   } catch (error) {
     if (error instanceof Error) {
