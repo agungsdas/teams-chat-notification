@@ -31506,9 +31506,9 @@ const notify = async (name, url, status, testflight, firebase, registerFirebase)
   }
 
   if (committerName === "Unknown") {
-    committerName = payload.head_commit?.committer?.name
-    committerEmail = payload.head_commit?.committer?.email
-    message = payload.head_commit?.message
+    committerName = pushPayload.head_commit?.committer?.name
+    committerEmail = pushPayload.head_commit?.committer?.email
+    message = pushPayload.head_commit?.message
   }
 
   if (environment.toLowerCase().includes("dev")) environment = "Dev";
