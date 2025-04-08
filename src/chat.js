@@ -36,6 +36,12 @@ const notify = async (name, url, status, testflight, firebase, registerFirebase)
     message = pushPayload.commits?.[0]?.message || "-";
   }
 
+  if (committerName === "Unknown") {
+    committerName = payload.head_commit?.committer?.name
+    committerEmail = payload.head_commit?.committer?.email
+    message = payload.head_commit?.message
+  }
+
   if (environment.toLowerCase().includes("dev")) environment = "Dev";
   if (environment.toLowerCase().includes("staging") || environment.toLowerCase().includes("release") || environment.toLowerCase().includes("hotfix")) environment = "Staging";
   if (environment.toLowerCase().includes("production") || environment.toLowerCase().includes("master") || environment.toLowerCase().includes("main")) environment = "Production";
