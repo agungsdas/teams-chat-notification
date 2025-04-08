@@ -31528,7 +31528,7 @@ const notify = async (name, url, status, testflight, firebase, registerFirebase)
   };
 
   const response = await axios.post(url, body);
-  if (response.status !== 200) {
+  if (![200, 202].includes(response.status)) {
     throw new Error(`Teams notification failed. Response status=${response.status}`);
   }
 };
