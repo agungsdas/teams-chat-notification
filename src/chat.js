@@ -31,12 +31,15 @@ const notify = async (name, url, status, testflight, firebase, registerFirebase)
 
   if (github.context.eventName === "push") {
     const pushPayload = github.context.payload || {};
+
     committerName = pushPayload.commits?.[0]?.committer?.name || "Unknown";
     committerEmail = pushPayload.commits?.[0]?.committer?.email || "-";
     message = pushPayload.commits?.[0]?.message || "-";
   }
 
   if (committerName === "Unknown") {
+    const pushPayload = github.context.payload || {};
+
     committerName = pushPayload.head_commit?.committer?.name
     committerEmail = pushPayload.head_commit?.committer?.email
     message = pushPayload.head_commit?.message
